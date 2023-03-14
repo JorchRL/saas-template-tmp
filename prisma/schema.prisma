@@ -20,6 +20,51 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
+// models for  user, organization, membership, role, subscription, payment and plan types
+
+model User {
+    id        String   @id @default(cuid())
+    username  String
+    roles     Role[]
+}
+
+model Organization {
+    id        String   @id @default(cuid())
+    name      String
+    members   Membership[]
+    roles     Role[]
+    plans     Plan[]
+    payments  Payment[]
+}
+
+model Membership {
+    id        String   @id @default(cuid())
+    user      User 
+    organization Organization
+    role      Role
+    code      String
+    email_verified Boolean
+}
+
+model subscription {
+    id        String   @id @default(cuid())
+    organization Organization
+    plan      Plan
+    payment   Payment
+}
+
+
+enum RoleType {
+    ADMIN
+    MEMBER
+}
+
+enum SubscriptionType {
+    FREE
+    PREMIUM
+    ENTERPRISE
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
