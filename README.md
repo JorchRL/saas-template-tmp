@@ -1,20 +1,25 @@
-# Create T3 App
+# SaaS Starter Template for Next.js
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a [T3 Stack](https://create.t3.gg/) project for a SaaS Starter Template.
 
-## What's next? How do I make an app with this?
+## Data Models
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This template is intended to support multi-tenant SaaS applications.
+It includes User and Organization models. As well as subscriptions.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Authentication
+
+This template uses NextAuth.js for authentication. It supports multiple providers including email/password, Google, GitHub, and Twitter.
+
+## Learn More about the T3 Stack
+
+This template is using all the technologies from the [T3 Stack](https://create.t3.gg/).
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
-
-## Learn More
 
 To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
@@ -25,4 +30,4 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 
 ## How do I deploy this?
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Clone this repo and start building your app. You can deploy it to Vercel then deploy to Vercel.
