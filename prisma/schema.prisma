@@ -22,7 +22,8 @@ model Organization {
     name      String
     members   Membership[]
     payments  Payment[]
-    subscription Subscription
+    subscription Subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
+    subscription_id String @unique
 }
 
 model Membership {
@@ -36,12 +37,13 @@ model Membership {
 // subscription record
 model Subscription {
     id        String   @id @default(cuid()) @map("_id")
-    organization Organization
+    organization Organization 
     user      User
 
     plan      SubscriptionType
-    payment   Payment
-
+    payment   Payment @relation(fields: [payment_id], references: [id])
+    payment_id String @unique
+    
     status    String
     start_date DateTime
     end_date DateTime
@@ -50,7 +52,8 @@ model Subscription {
 // record of payment
 model Payment {
     id        String   @id @default(cuid()) @map("_id")
-    organization Organization
+    organization Organization @relation(fields: [organization_id], references: [id])
+    organization_id String @unique
     amount    Int
     currency  String
     status    String
