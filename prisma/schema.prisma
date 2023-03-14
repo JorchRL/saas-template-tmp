@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mongodb"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -14,47 +14,56 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
 
 // models for  user, organization, membership, role, subscription, payment and plan types
 
-model User {
-    id        String   @id @default(cuid())
-    username  String
-    roles     Role[]
-}
-
 model Organization {
-    id        String   @id @default(cuid())
+    id        String   @id @default(cuid()) @map("_id")
     name      String
     members   Membership[]
-    roles     Role[]
-    plans     Plan[]
     payments  Payment[]
+    subscription Subscription
 }
 
 model Membership {
-    id        String   @id @default(cuid())
+    id        String   @id @default(cuid()) @map("_id")
     user      User 
     organization Organization
-    role      Role
     code      String
     email_verified Boolean
 }
 
-model subscription {
-    id        String   @id @default(cuid())
+// subscription record
+model Subscription {
+    id        String   @id @default(cuid()) @map("_id")
     organization Organization
-    plan      Plan
+    user      User
+
+    plan      SubscriptionType
     payment   Payment
+
+    status    String
+    start_date DateTime
+    end_date DateTime
+}
+
+// record of payment
+model Payment {
+    id        String   @id @default(cuid()) @map("_id")
+    organization Organization
+    amount    Int
+    currency  String
+    status    String
+    payment_method String
+    payment_method_details String
+    receipt_url String
+    subscription_id String
+    customer_id String
 }
 
 
 enum RoleType {
+    OWNER
     ADMIN
     MEMBER
 }
@@ -67,7 +76,7 @@ enum SubscriptionType {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
+    id                String  @id @default(cuid()) @map("_id")
     userId            String
     type              String
     provider          String
@@ -85,7 +94,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(cuid()) @map("_id")
     sessionToken String   @unique
     userId       String
     expires      DateTime
@@ -93,13 +102,14 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(cuid()) @map("_id")
     name          String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    role         RoleType
 }
 
 model VerificationToken {
